@@ -1,9 +1,21 @@
 #include "stdio.h"
+#include "stdlib.h"
 #include "omp.h"
 
 #define NUM_THREADS 4
 
+
+void piClassic();
+void piMonteCarlo();
+
+
 int main() {
+	piMonteCarlo();
+	return 0;
+}
+
+
+void piClassic() {
 	int n = 10000000;
 	int i , nthreads;
 	double pi, step, sum[NUM_THREADS];
@@ -27,6 +39,24 @@ int main() {
 		pi += sum[i] * step;
 
 	printf ("PI ~ %.20f\n", pi );
+}
 
-	return 0;
+
+void piMonteCarlo() {
+	int n = 100000000;
+	int i , ncirc = 0;
+	
+	double pi, x, y, r = 1.0;
+	
+	srand(12345);
+	
+	#pragma omp parallel for private (x,y) reduction(+:ncirc )
+	for ( i = 0; i < n; i++) {
+		x = (double) rand() / RAND_MAX * r * 2.0 - r;
+		y = (double) rand() / RAND_MAX * r * 2.0 - r;
+		if ((x * x + y * y) <= r * r) ncirc ++;
+	}
+	
+	pi = 4.0 * ((double) ncirc / (double) n);
+	printf ("PI ~ %.20f\n", pi );
 }
