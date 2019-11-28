@@ -4,30 +4,31 @@
 
 void mpiTrapeziumPiCalc(int argc, char *argv[]);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	mpiTrapeziumPiCalc(argc, argv);
 	return 0;
 }
 
-double f(double _val)
-{
+double f(double _val) {
 	return 4.0 / (1 + _val * _val);
 }
 
-double intevalTrapeziumPiCalc(int _rank, int _mpiSize, double _n)
-{
+double intevalTrapeziumPiCalc(int _rank, int _mpiSize, unsigned int _n) {
 	double result = 0;
 	for (int i = _rank; i < _n; i+= _mpiSize)
-		result += f(i / _n) + f((i + 1) / _n);
+		result += f(i / static_cast<double>(_n)) + f((i + 1) / static_cast<double>(_n));
 	return result;
+}
+
+double errorApproximation(unsigned int _n) {
+	return (2.0/(3.0*_n*_n));
 }
 
 void mpiTrapeziumPiCalc(int argc, char *argv[])
 {
 	int32_t size	= 0;
 	int32_t rank	= 0;
-	int32_t n		= 0;
+	uint32_t n		= 0;
 	double	pi		= 0;
 
 	MPI_Init(&argc, &argv);
@@ -51,10 +52,11 @@ void mpiTrapeziumPiCalc(int argc, char *argv[])
 	if (rank == 0)
 	{
 		pi /= 2.0 * n;
-		double error = std::abs(M_PI - pi);
-
+		double realError 			= std::abs(M_PI - pi);
+		double approximatedError 	= errorApproximation(n);
 		std::cout << "Trapezium Pi = "		<< pi		<< " with n = " << n << " intervals" << std::endl;
-		std::cout << "Trapezium Error = "	<< error	<< std::endl;
+		std::cout << "Real Error = "		<< realError	<< std::endl;
+		std::cout << "Approximated Error = " << approximatedError << std::endl;
 		std::cout << "WTime difference = "	<< endTime - startTime << std::endl;
 	}
 
