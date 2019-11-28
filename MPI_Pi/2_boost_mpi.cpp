@@ -57,7 +57,7 @@ void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 	{
 		double m = static_cast<double>(n/2);
 		pi += f(0) + f(1);
-		pi += 4.0 * f((2.0 * m - 1) / (2.0 * m));
+		//pi += 4.0 * f((2.0 * m - 1) / (2.0 * m));
 		pi /= 6.0 * m;
 
 		double realError = std::abs(M_PI - pi);
