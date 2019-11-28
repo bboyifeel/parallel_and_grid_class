@@ -62,7 +62,7 @@ void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 
 		double realError = std::abs(M_PI - pi);
 
-		std::cout << "Simpson's Pi = " < < pi
+		std::cout << "Simpson's Pi = " << pi
 				<< " with n = " << n
 				<< " intervals" << std::endl;
 		std::cout << "Simpson's Real Error = " << realError << std::endl;
