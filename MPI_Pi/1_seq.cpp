@@ -10,11 +10,13 @@ int main(int argc, char* argv[]) {
 	std::cout << "Enter number of intervals (n) " << std::endl;
 	std::cin >> n;
 
-	double trapeziumPi		= seqTrapeziumPiCalc(n);
-	double errorTrapezim	= std::abs(M_PI - trapeziumPi);
+	double trapeziumPi = seqTrapeziumPiCalc(n);
+	double errorTrapezim  std::abs(M_PI - trapeziumPi);
 	double approximatedError = errorApproximation(n);
-	std::cout << "Trapezium Pi = "	<< trapeziumPi << " with n = " << n << " intervals" << std::endl;
-	std::cout << "Real Error = "	<< errorTrapezim << std::endl;
+	std::cout << "Trapezium Pi = " << trapeziumPi 
+			<< " with n = " << n 
+			<< " intervals" << std::endl;
+	std::cout << "Real Error = " << errorTrapezim << std::endl;
 	std::cout << "Approximated Error = " << approximatedError << std::endl;
 
 	return 0;
@@ -28,12 +30,12 @@ double seqTrapeziumPiCalc(unsigned int _n) {
 	double result = 0;
 
 	double from = f(0);
-	double to 	= 0;
+	double to = 0;
 	
 	for (int i = 0; i < _n; i++) {
-		to 		= f((i + 1) / static_cast<double>(_n));
+		to = f((i + 1) / static_cast<double>(_n));
 		result += from + to;
-		from	= to;
+		from = to;
 	}
 	result /= 2.0 * _n;
 	return result;
