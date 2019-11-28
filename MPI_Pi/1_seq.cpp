@@ -26,8 +26,15 @@ double f(double _val) {
 
 double seqTrapeziumPiCalc(unsigned int _n) {
 	double result = 0;
-	for (int i = 0; i < _n; i++)
-		result += f(i / _n) + f((i + 1) / _n);
+
+	double from = f(0);
+	double to 	= 0;
+	
+	for (int i = 0; i < _n; i++) {
+		to 		= f((i + 1) / static_cast<double>(_n));
+		result += from + to;
+		from	= to;
+	}
 	result /= 2.0 * _n;
 	return result;
 }
