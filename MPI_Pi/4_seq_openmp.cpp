@@ -3,8 +3,9 @@
 #include "omp.h"
 #include <chrono>
 
-class Timer
-{
+#define NUM_THREADS 4
+
+class Timer {
 public:
 	Timer() : beg_(clock_::now()) {}
 	void reset() { beg_ = clock_::now(); }
@@ -20,11 +21,10 @@ private:
 };
 
 
-int main()
-{
-	int n		= 10000000;
-	int ncirc	= 0;
-	double r	= 1.0;
+int main() {
+	int n = 100000000;
+	int ncirc = 0;
+	double r = 1.0;
 	double pi, x, y;
 	
 	srand(132345);
@@ -39,6 +39,7 @@ int main()
 	}
 	double sec = timer.elapsed();
 	pi = 4.0 * ((double)ncirc / (double)n);
+
 	printf("PI ~ %.20f\n", pi);
 	printf("Time %f\n", sec);
 	return 0;
