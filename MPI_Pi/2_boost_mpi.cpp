@@ -26,6 +26,10 @@ double intervalSimpsonsPiCalc(int _rank, int _mpiSize, uint32_t _n) {
 	return result;
 }
 
+double errorApproximation(unsigned int _n) {
+	return 8.0/(15.0*_n*_n*_n*_n);
+}
+
 void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 	int32_t size	= 0;
 	int32_t rank	= 0;
