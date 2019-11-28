@@ -61,12 +61,12 @@ void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 		pi /= 6.0 * m;
 
 		double realError = std::abs(M_PI - pi);
-
+		double approximatedError = errorApproximation(n);
 		std::cout << "Simpson's Pi = " << pi
 				<< " with n = " << n
 				<< " intervals" << std::endl;
 		std::cout << "Simpson's Real Error = " << realError << std::endl;
-
+		std::cout << "Approximated Error = " << approximatedError << std::endl;
 		std::cout << "WTime difference = " << elapsedTime << std::endl;
 	}
 }
