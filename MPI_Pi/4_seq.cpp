@@ -1,39 +1,45 @@
-#include <iostream>
-#include <random>
-#include <cmath>
-const int MAX_NB_RANDOM_POINT = 1000;
-void runMonteCarloPiCalc();
+#include "stdio.h"
+#include "stdlib.h"
+#include "omp.h"
+#include <chrono>
 
-int main(int argc, char* argv[])
+class Timer
 {
-	runMonteCarloPiCalc();
-	return 0;
-}
+public:
+	Timer() : beg_(clock_::now()) {}
+	void reset() { beg_ = clock_::now(); }
+	double elapsed() const {
+		return std::chrono::duration_cast<second_>
+			(clock_::now() - beg_).count();
+	}
 
-void runMonteCarloPiCalc()
+private:
+	typedef std::chrono::high_resolution_clock clock_;
+	typedef std::chrono::duration<double, std::ratio<1> > second_;
+	std::chrono::time_point<clock_> beg_;
+};
+
+
+int main()
 {
-	int ncirc = 0;
-	double r = 1.0;
+	int n		= 10000000;
+	int ncirc	= 0;
+	double r	= 1.0;
 	double pi, x, y;
-	double accuracy = 0.0001;
-	int i = 0;
-	double error = M_PI;
-
-	std::random_device	rand_dev;
-	std::default_random_engine generator(rand_dev());
-	std::uniform_real_distribution<double> distribution(0.0, 1.0);
-
-	std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
-	std::cin >> accuracy;
-
-	for (i = 1; i < MAX_NB_RANDOM_POINT && error > accuracy; i++)
+	
+	srand(132345);
+	Timer timer;
+	#pragma omp parallel for private(x,y) reduction(+:ncirc) 
+	for (int i = 0; i < n; i++)
 	{
-		x = distribution(generator) * r * 2.0 - r;
-		y = distribution(generator) * r * 2.0 - r;
+		x = (double)rand() / RAND_MAX * r * 2.0 - r;
+		y = (double)rand() / RAND_MAX * r * 2.0 - r;
 		if ((x * x + y * y) <= r * r)
 			ncirc++;
-		pi = 4.0 * ((double)ncirc / (double)i);
-		error = std::abs(M_PI - pi);
 	}
+	double sec = timer.elapsed();
+	pi = 4.0 * ((double)ncirc / (double)n);
 	printf("PI ~ %.20f\n", pi);
+	printf("Time %f\n", sec);
+	return 0;
 }
