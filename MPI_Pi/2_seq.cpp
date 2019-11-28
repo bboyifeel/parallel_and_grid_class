@@ -28,8 +28,8 @@ double errorApproximation(unsigned int _n) {
 	return 8.0/(15.0*_n*_n*_n*_n);
 }
 
-double seqSimpsonsPiCalc(unsigned int _m) {
-	double m = static_cast<double>(_m/2);
+double seqSimpsonsPiCalc(unsigned int _n) {
+	double m = static_cast<double>(_n/2);
 	double result = f(0) + f(1);
 	for (int i = 1; i < m; i++)
 		result += 2.0 * f(i / m) + 4.0 * f((2.0*i - 1) / (2.0 * m));
