@@ -4,6 +4,8 @@
 #include <fstream>
 #include <cstdio>
 
+const uint64_t MAX_NB_RANDOM_POINT = 1000000000;
+
 void runMonteCarloPiCalc();
 
 int main(int argc, char* argv[]) {
@@ -25,7 +27,7 @@ void runMonteCarloPiCalc() {
 	int ncirc = 0;
 	double r = 1.0;
 	double pi, x, y;
-	unsigned int MAX_NB_RANDOM_POINT = 1000;
+	unsigned int iterSize = 10000;
 	double epsilon = 0.00001;
 
 	do {
@@ -51,9 +53,9 @@ void runMonteCarloPiCalc() {
   	bool done = false;
   	double error = 1;
   	
-  	while (error > epsilon) {
+  	while (error > epsilon || (iterSize * iter) > MAX_NB_RANDOM_POINT) {
   		iter++;
-		for (int i = 0; i < MAX_NB_RANDOM_POINT; i++)
+		for (int i = 0; i < iterSize; i++)
 		{
 			x = distribution(generator) * r * 2.0 - r;
 			y = distribution(generator) * r * 2.0 - r;
@@ -65,7 +67,7 @@ void runMonteCarloPiCalc() {
 				outsideOfCircle << x << " " << y << std::endl;
 			}
 		}
-		pi = 4.0 * ((double) ncirc / ((double) MAX_NB_RANDOM_POINT * iter));
+		pi = 4.0 * ((double) ncirc / ((double) iterSize * iter));
 		error = std::abs(M_PI - pi);
 	}
 
