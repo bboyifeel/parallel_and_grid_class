@@ -10,7 +10,7 @@ const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
 uint64_t packSize = 100000;
-const uint64_t MAX_NB_RANDOM_POINT = 1000000000;
+const uint64_t MAX_NB_RANDOM_POINT = 100000000;
 
 const double r = 1.0;
 
@@ -148,6 +148,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 			
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
 				stop = 1;
+				std::cout << "Pi " << pi << std::endl;
 			}
 		}
 		MPI_Bcast(&stop, /*count*/1, MPI_INT, masterNode, MPI_COMM_WORLD);
@@ -161,5 +162,5 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	MPI_Finalize();
 }
 
-
+// 2 1.57538e+09
 // 6 - 1.57538e+09
