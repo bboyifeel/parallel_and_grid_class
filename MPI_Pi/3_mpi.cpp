@@ -28,7 +28,7 @@ std::vector<double> generateVector(uint64_t vectorSize
 
 	double r = 1.0;
 	for(int i = 0; i < packSize; i++) { 
-		toReturn[i] = = distribution(generator) * r * 2.0 - r;
+		toReturn[i] = distribution(generator) * r * 2.0 - r;
 	}
 
 	return toReturn;
@@ -131,15 +131,15 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	}
 
 	MPI_Reduce(&localResult, &globalResult, 1, MPI_INT, MPI_SUM, masterNode, MPI_COMM_WORLD);
-	double endTime = MPI_Wtime();
 	double pi = 0;
 
 	if (rank == masterNode) {
 		pi = 4.0 * ((double) globalResult / ((double) packSize * (nodesSize - 1)));
 	}
 
+	double endTime = MPI_Wtime();
+	
 	std::cout << "PI: " << pi << std::endl;
 	//////
-	double endTime = MPI_Wtime();
 	MPI_Finalize();
 }
