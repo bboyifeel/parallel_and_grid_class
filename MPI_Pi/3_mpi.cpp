@@ -35,10 +35,9 @@ std::vector<double> generateVector(uint64_t vectorSize
 	return toReturn;
 }
 
-void managerCode(uint32_t nodesSize) {
-	std::random_device rand_dev;
-	std::default_random_engine generator(rand_dev());
-	std::uniform_real_distribution<double> distribution(0.0, 1.0);
+void managerCode(uint32_t nodesSize
+	, std::default_random_engine generator
+	, std::uniform_real_distribution<double> distribution) {
 
 	for (int node = 1; node < nodesSize; node++) {
 		
@@ -110,6 +109,10 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	MPI_Comm_size(MPI_COMM_WORLD, &nodesSize);	// Get #processes
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);	// Get current rank
 
+	std::random_device rand_dev;
+	std::default_random_engine generator(rand_dev());
+	std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
 	if (rank == masterNode) {
 		do {
 			std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
@@ -129,7 +132,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	do {
 		iter++;
 		if (rank == masterNode) { // server 
-			managerCode(nodesSize);
+			managerCode(nodesSize, generator, distribution);
 		}
 		else {
 			localIterResult = workerCode();
