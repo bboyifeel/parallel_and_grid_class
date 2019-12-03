@@ -149,6 +149,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
 				stop = 1;
 				std::cout << "Pi " << pi << std::endl;
+				std::cout << "Iteration number" << iter << std::endl;
 			}
 		}
 		MPI_Bcast(&stop, /*count*/1, MPI_INT, masterNode, MPI_COMM_WORLD);
