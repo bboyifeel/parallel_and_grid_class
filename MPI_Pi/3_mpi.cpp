@@ -61,14 +61,14 @@ void managerCode(uint32_t nodesSize
 
 
 uint32_t workerCode() {
-	double xDotsPack[packSize];
-	double yDotsPack[packSize];
+	std::vector<double> xDotsPack(packSize);
+	std::vector<double> yDotsPack(packSize);
 	double x, y;
 	uint32_t localResult = 0;
 	
 	MPI_Status status;
 
-	MPI_Recv(xDotsPack
+	MPI_Recv(&xDotsPack[0]
 			, packSize
 			, MPI_DOUBLE
 			, masterNode
@@ -76,7 +76,7 @@ uint32_t workerCode() {
 			, MPI_COMM_WORLD
 			, &status);
 
-	MPI_Recv(yDotsPack
+	MPI_Recv(&yDotsPack[0]
 			, packSize
 			, MPI_DOUBLE
 			, masterNode
