@@ -43,9 +43,7 @@ void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 	MPI_Reduce(&intervalResult, &pi, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 	double endTime = MPI_Wtime();
 
-	if (rank == 0)
-	{
-		pi += intervalResult;
+	if (rank == 0) {
 		pi += f(0) + f(1);
 		pi += 4.0 * f((2.0 * m - 1) / (2.0 * m));
 		pi /= 6.0 * m;
