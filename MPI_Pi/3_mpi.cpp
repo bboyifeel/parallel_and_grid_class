@@ -46,7 +46,7 @@ void managerCode(uint32_t nodesSize
 		double xDotsPack[packSize];
 		double yDotsPack[packSize];
 
-		for(int i = 0; i < vectorSize; i++) { 
+		for(int i = 0; i < packSize; i++) { 
 			xDotsPack[i] = distribution(generator);
 			yDotsPack[i] = distribution(generator);
 		}
