@@ -10,7 +10,8 @@
 const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
-const uint64_t MAX_NB_RANDOM_POINT = 1000000000;
+
+unsigned int packSize = 100000;
 
 void runMonteCarloPiCalc(int argc, char *argv[]);
 
@@ -103,7 +104,6 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	int localCount = 0;
 	double r = 1.0;
 	double epsilon = 0.00001;
-	unsigned int packSize = 100000;
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &nodesSize);	// Get #processes
@@ -132,14 +132,13 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 
 	MPI_Reduce(&localResult, &globalResult, 1, MPI_INT, MPI_SUM, masterNode, MPI_COMM_WORLD);
 	double endTime = MPI_Wtime();
-
-
 	double pi = 0;
+	
 	if (rank == masterNode) {
-		pi = 4.0 * ((double) globalResult / ((double) iterSize * iter));
+		pi = 4.0 * ((double) globalResult / ((double) packSize * (nodesSize - 1)));
 	}
 
-	
+	std::cout << "PI: " << pi << std::endl;
 	//////
 	double endTime = MPI_Wtime();
 	MPI_Finalize();
