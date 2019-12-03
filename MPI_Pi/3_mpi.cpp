@@ -134,7 +134,10 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	double pi = 0;
 
 	if (rank == masterNode) {
-		pi = 4.0 * ((double) globalResult / ((double) packSize * (nodesSize - 1)));
+		double total = packSize * (nodesSize - 1);
+		std::cout << "in circle " << globalResult << std::endl;
+		std::cout << "total " << total << std::endl;
+		pi = 4.0 * (double) globalResult / total;
 		std::cout << "PI: " << pi << std::endl;
 	}
 
