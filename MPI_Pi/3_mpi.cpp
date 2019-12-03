@@ -135,11 +135,10 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 
 	if (rank == masterNode) {
 		pi = 4.0 * ((double) globalResult / ((double) packSize * (nodesSize - 1)));
+		std::cout << "PI: " << pi << std::endl;
 	}
 
 	double endTime = MPI_Wtime();
-	
-	std::cout << "PI: " << pi << std::endl;
 	//////
 	MPI_Finalize();
 }
