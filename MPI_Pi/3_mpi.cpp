@@ -6,13 +6,14 @@
 #include <cstdio>
 #include <vector>
 
-
 const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
-
 uint64_t packSize = 100000;
 const uint64_t MAX_NB_RANDOM_POINT = 1000;
+
+const double r = 1.0;
+
 
 void runMonteCarloPiCalc(int argc, char *argv[]);
 
@@ -27,7 +28,6 @@ std::vector<double> generateVector(uint64_t vectorSize
 
 	std::vector<double> toReturn(vectorSize);
 
-	double r = 1.0;
 	for(int i = 0; i < vectorSize; i++) { 
 		toReturn[i] = distribution(generator) * r * 2.0 - r;
 	}
@@ -89,7 +89,7 @@ uint32_t workerCode() {
 		y = yDotsPack[i];
 		
 		// r = 1 --> r*r = 1
-		if ((x * x + y * y) <= 1)
+		if ((x * x + y * y) <= r * r)
 			localResult++;
 	}
 
@@ -102,7 +102,6 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	int32_t rank = 0;
 
 	int localCount = 0;
-	double r = 1.0;
 	double epsilon = 0.00001;
 
 	MPI_Init(&argc, &argv);
