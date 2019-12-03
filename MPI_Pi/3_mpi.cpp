@@ -89,7 +89,8 @@ uint32_t workerCode() {
 		x = xDotsPack[i];
 		y = yDotsPack[i];
 		
-		if ((x * x + y * y) <= r * r)
+		// r = 1 --> r*r = 1
+		if ((x * x + y * y) <= 1)
 			localResult++;
 	}
 
@@ -133,7 +134,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	MPI_Reduce(&localResult, &globalResult, 1, MPI_INT, MPI_SUM, masterNode, MPI_COMM_WORLD);
 	double endTime = MPI_Wtime();
 	double pi = 0;
-	
+
 	if (rank == masterNode) {
 		pi = 4.0 * ((double) globalResult / ((double) packSize * (nodesSize - 1)));
 	}
