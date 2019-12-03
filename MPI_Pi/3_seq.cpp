@@ -28,16 +28,15 @@ void runMonteCarloPiCalc() {
 	double r = 1.0;
 	double pi, x, y;
 	unsigned int iterSize = 10000;
-	double epsilon = 0.00001;
+	double epsilon = 0.1;
 
 	do {
 		std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
-		std::cin >> epsilon;
+		//std::cin >> epsilon;
 	} while (epsilon >= 1 || epsilon <= 0);
 
 	std::random_device	rand_dev;
 	std::default_random_engine generator(rand_dev());
-	//std::uniform_real_distribution<double> distribution(0.0, 1.0);
 	std::uniform_real_distribution<double> distribution(-1.0, 1.0);
 
 	std::string inFileName = "insideOfCircle.dat";
@@ -57,8 +56,6 @@ void runMonteCarloPiCalc() {
   		iter++;
 		for (int i = 0; i < iterSize; i++)
 		{
-			// x = distribution(generator) * r * 2.0 - r;
-			// y = distribution(generator) * r * 2.0 - r;
 			x = distribution(generator);
 			y = distribution(generator);
 			if ((x * x + y * y) <= r * r) {

@@ -41,16 +41,23 @@ void managerCode(uint32_t nodesSize
 
 	for (int node = 1; node < nodesSize; node++) {
 		
-		std::vector<double> xDotsPack = generateVector(packSize, generator, distribution);
-		std::vector<double> yDotsPack = generateVector(packSize, generator, distribution);
+		// std::vector<double> xDotsPack = generateVector(packSize, generator, distribution);
+		// std::vector<double> yDotsPack = generateVector(packSize, generator, distribution);
+		double xDotsPack[packSize];
+		double yDotsPack[packSize];
 
-		MPI_Send(&xDotsPack[0]
+		for(int i = 0; i < vectorSize; i++) { 
+			xDotsPack[i] = distribution(generator);
+			yDotsPack[i] = distribution(generator);
+		}
+
+		MPI_Send(xDotsPack
 				,packSize
 				,MPI_DOUBLE
 				, /*dest*/ node
 				,tagXDotsPack
 				,MPI_COMM_WORLD);
-		MPI_Send(&yDotsPack[0]
+		MPI_Send(yDotsPack
 				,packSize
 				,MPI_DOUBLE
 				, /*dest*/ node
@@ -61,14 +68,16 @@ void managerCode(uint32_t nodesSize
 
 
 uint32_t workerCode() {
-	std::vector<double> xDotsPack(packSize);
-	std::vector<double> yDotsPack(packSize);
+	// std::vector<double> xDotsPack(packSize);
+	// std::vector<double> yDotsPack(packSize);
+	double xDotsPack[packSize];
+	double yDotsPack[packSize];
 	double x, y;
 	uint32_t localResult = 0;
 	
 	MPI_Status status;
 
-	MPI_Recv(&xDotsPack[0]
+	MPI_Recv(xDotsPack
 			, packSize
 			, MPI_DOUBLE
 			, masterNode
@@ -76,7 +85,7 @@ uint32_t workerCode() {
 			, MPI_COMM_WORLD
 			, &status);
 
-	MPI_Recv(&yDotsPack[0]
+	MPI_Recv(yDotsPack
 			, packSize
 			, MPI_DOUBLE
 			, masterNode
