@@ -11,7 +11,8 @@ const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
 
-unsigned int packSize = 100000;
+uint64_t packSize = 100000;
+const uint64_t MAX_NB_RANDOM_POINT = 1000000000;
 
 void runMonteCarloPiCalc(int argc, char *argv[]);
 
@@ -120,26 +121,38 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	double startTime = MPI_Wtime();
 	
 	//////
-	uint32_t localResult = 0;
+	uint32_t localIterResult = 0;
 	uint32_t globalResult = 0;
 
-	if (rank == masterNode) { // server 
-		managerCode(nodesSize);
-	}
-	else {
-		localResult = workerCode();
-	}
+	int stop = 0;
+	uint32_t iter = 0;
+	do {
+		iter++;
+		if (rank == masterNode) { // server 
+			managerCode(nodesSize);
+		}
+		else {
+			localIterResult = workerCode();
+		}
 
-	MPI_Reduce(&localResult, &globalResult, 1, MPI_INT, MPI_SUM, masterNode, MPI_COMM_WORLD);
-	double pi = 0;
+		uint64_t globalIterResult = 0;
+		MPI_Reduce(&localIterResult, &globalIterResult, 1, MPI_INT, MPI_SUM, masterNode, MPI_COMM_WORLD);
+		double pi = 0;
 
-	if (rank == masterNode) {
-		double total = packSize * (nodesSize - 1);
-		std::cout << "in circle " << globalResult << std::endl;
-		std::cout << "total " << total << std::endl;
-		pi = 4.0 * (double) globalResult / total;
-		std::cout << "PI: " << pi << std::endl;
-	}
+		if (rank == masterNode) {
+			globalResult += globalIterResult;
+			uint64_t total = iter * packSize * (nodesSize - 1);
+			std::cout << "in circle " << globalResult << std::endl;
+			std::cout << "total " << total << std::endl;
+			pi = 4.0 * (double) globalResult / (double) total;
+			std::cout << "PI: " << pi << std::endl;
+			double error = std::abs(M_PI - pi);
+			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
+				stop = 1;
+			}
+		}
+		MPI_Bcast(&stop, /*count*/1, MPI_INT, masterNode, MPI_COMM_WORLD);
+	} while(!stop);
 
 	double endTime = MPI_Wtime();
 	//////
