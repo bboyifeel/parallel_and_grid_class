@@ -28,7 +28,7 @@ std::vector<double> generateVector(uint64_t vectorSize
 	std::vector<double> toReturn(vectorSize);
 
 	double r = 1.0;
-	for(int i = 0; i < packSize; i++) { 
+	for(int i = 0; i < vectorSize; i++) { 
 		toReturn[i] = distribution(generator) * r * 2.0 - r;
 	}
 
@@ -114,6 +114,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
 	if (rank == masterNode) {
+		std::cout << nodesSize << std::endl;
 		do {
 			std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
 			std::cin >> epsilon;
