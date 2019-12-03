@@ -18,9 +18,6 @@ srun -p interactive --qos qos-interactive --time 1:00:0 -N 2 -n 2 -c 4 --pty bas
 gcc -fopenmp
 #OR
 icc -openmp
-# icc -qopenmp -xhost -Wall -O2 src/a_2_3_openmp.cpp -o bin/a_2_3_openmp
-# export OMP_NUM_THREADS=1
-# ./a_2_3_openmp
 
 
 module purge
@@ -29,10 +26,8 @@ module load devel/Boost/
 
 
 #MPI run and compile
-mpiicpc src/mpi_broadcast.cpp -o bin/mpi_broadcast -lpthread		//regular
-mpiicpc src/a_2_2_boost_mpi.cpp -o bin/a_2_2_boost_mpi -lboost_mpi	//boost
-srun -n $SLURM_NTASKS ~/assigments/bin/'your file'
-
+mpiicpc 3_mpi.cpp -o 3_mpi -lpthread # for boost -lboost_mpi (instead)
+srun -n $SLURM_NTASKS 3_mpi
 
 #spark
 srun -p interactive -N 2 -n 2 -c 28 -t 3:00:00 --pty bash

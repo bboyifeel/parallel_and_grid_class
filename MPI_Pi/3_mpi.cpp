@@ -22,19 +22,6 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-std::vector<double> generateVector(uint64_t vectorSize
-	, std::default_random_engine generator
-	, std::uniform_real_distribution<double> distribution) {
-
-	std::vector<double> toReturn(vectorSize);
-
-	for(int i = 0; i < vectorSize; i++) { 
-		toReturn[i] = distribution(generator);
-	}
-
-	return toReturn;
-}
-
 void managerCode(uint32_t nodesSize
 	, std::default_random_engine generator
 	, std::uniform_real_distribution<double> distribution) {
@@ -111,7 +98,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	int32_t rank = 0;
 
 	int localCount = 0;
-	double epsilon = 0.00001;
+	double epsilon = 0.001;
 
 	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &nodesSize);	// Get #processes
@@ -155,18 +142,11 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 		if (rank == masterNode) {
 			totalInCircle += globalIterResult;
 			uint64_t total = iter * packSize * (nodesSize - 1);
-			
-			//std::cout << "in circle " << totalInCircle << std::endl;
-			//std::cout << "total " << total << std::endl;
-			
 			pi = 4.0 * ((double) totalInCircle / (double) total);
-
-			//std::cout << "PI: " << pi << std::endl;
 			
 			double error = std::abs(M_PI - pi);
 			
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
-				//std::cout << "Stopping" << std::endl;
 				stop = 1;
 			}
 		}
@@ -180,3 +160,6 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	//////
 	MPI_Finalize();
 }
+
+
+// 6 - 1.57538e+09
