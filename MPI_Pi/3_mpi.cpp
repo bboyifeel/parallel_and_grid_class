@@ -124,9 +124,10 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	if (rank == masterNode) {
 		std::cout << nodesSize << std::endl;
 		do {
-			std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
-			std::cin >> epsilon;
+			//std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
+			//std::cin >> epsilon;
 		} while (epsilon >= 1 || epsilon <= 0);
+		std::cout << "Computing..."
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
@@ -155,17 +156,17 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 			totalInCircle += globalIterResult;
 			uint64_t total = iter * packSize * (nodesSize - 1);
 			
-			std::cout << "in circle " << totalInCircle << std::endl;
-			std::cout << "total " << total << std::endl;
+			//std::cout << "in circle " << totalInCircle << std::endl;
+			//std::cout << "total " << total << std::endl;
 			
 			pi = 4.0 * ((double) totalInCircle / (double) total);
 
-			std::cout << "PI: " << pi << std::endl;
+			//std::cout << "PI: " << pi << std::endl;
 			
 			double error = std::abs(M_PI - pi);
 			
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
-				std::cout << "Stopping" << std::endl;
+				//std::cout << "Stopping" << std::endl;
 				stop = 1;
 			}
 		}
@@ -173,6 +174,9 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	} while(!stop);
 
 	double endTime = MPI_Wtime();
+	if (rank==masterNode) {
+		std::cout << "Time " << endTime << std::endl;
+	}
 	//////
 	MPI_Finalize();
 }
