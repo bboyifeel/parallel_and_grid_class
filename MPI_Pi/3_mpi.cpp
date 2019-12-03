@@ -157,7 +157,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 
 	double endTime = MPI_Wtime();
 	if (rank==masterNode) {
-		std::cout << "Time " << endTime << std::endl;
+		std::cout << "Time " << endTime - startTime << std::endl;
 	}
 	//////
 	MPI_Finalize();
