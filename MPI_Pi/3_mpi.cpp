@@ -165,6 +165,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 			double error = std::abs(M_PI - pi);
 			
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
+				std::cout << "Stopping" << std::endl;
 				stop = 1;
 			}
 		}
