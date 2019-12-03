@@ -127,7 +127,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 			//std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
 			//std::cin >> epsilon;
 		} while (epsilon >= 1 || epsilon <= 0);
-		std::cout << "Computing..."
+		std::cout << "Computing..." << std::endl;
 	}
 
 	MPI_Barrier(MPI_COMM_WORLD);
