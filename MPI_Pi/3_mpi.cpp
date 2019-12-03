@@ -10,7 +10,7 @@ const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
 uint64_t packSize = 100000;
-const uint64_t MAX_NB_RANDOM_POINT = 1000;
+const uint64_t MAX_NB_RANDOM_POINT = 1000000000;
 
 const double r = 1.0;
 
