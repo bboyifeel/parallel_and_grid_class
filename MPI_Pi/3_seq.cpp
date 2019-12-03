@@ -32,7 +32,7 @@ void runMonteCarloPiCalc() {
 
 	do {
 		std::cout << "Enter desired accuracy (format e=0.0001)" << std::endl;
-		//std::cin >> epsilon;
+		std::cin >> epsilon;
 	} while (epsilon >= 1 || epsilon <= 0);
 
 	std::random_device	rand_dev;

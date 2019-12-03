@@ -30,6 +30,7 @@ void managerCode(uint32_t nodesSize
 		double xDotsPack[packSize];
 		double yDotsPack[packSize];
 
+		#pragma omp parallel
 		for(int i = 0; i < packSize; i++) { 
 			xDotsPack[i] = distribution(generator);
 			yDotsPack[i] = distribution(generator);
@@ -75,6 +76,7 @@ uint32_t workerCode() {
 			, MPI_COMM_WORLD
 			, &status);
 
+	#pragma omp parallel for private(x,y) reduction(+:localResult) 
 	for (int i = 0; i < packSize; i++) {
 		x = xDotsPack[i];
 		y = yDotsPack[i];
