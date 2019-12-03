@@ -45,6 +45,7 @@ void mpiSimpsonsPiCalc(int argc, char *argv[]) {
 
 	if (rank == 0)
 	{
+		pi += intervalResult;
 		pi += f(0) + f(1);
 		pi += 4.0 * f((2.0 * m - 1) / (2.0 * m));
 		pi /= 6.0 * m;
