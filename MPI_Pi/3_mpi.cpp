@@ -26,10 +26,9 @@ std::vector<double> generateVector(uint64_t vectorSize
 
 	std::vector<double> toReturn(vectorSize);
 
-	double item = 0;
-	for(int i = 0; i < packSize; i++) {
-		item = distribution(generator) * r * 2.0 - r;
-		toReturn[i] = item;
+	double r = 1.0;
+	for(int i = 0; i < packSize; i++) { 
+		toReturn[i] = = distribution(generator) * r * 2.0 - r;
 	}
 
 	return toReturn;
