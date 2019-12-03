@@ -29,7 +29,7 @@ std::vector<double> generateVector(uint64_t vectorSize
 	std::vector<double> toReturn(vectorSize);
 
 	for(int i = 0; i < vectorSize; i++) { 
-		toReturn[i] = distribution(generator) * r * 2.0 - r;
+		toReturn[i] = distribution(generator);
 	}
 
 	return toReturn;
@@ -110,7 +110,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 
 	std::random_device rand_dev;
 	std::default_random_engine generator(rand_dev());
-	std::uniform_real_distribution<double> distribution(0.0, 1.0);
+	std::uniform_real_distribution<double> distribution(-1.0, 1.0);
 
 	if (rank == masterNode) {
 		std::cout << nodesSize << std::endl;
@@ -125,7 +125,7 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 	
 	//////
 	uint32_t localIterResult = 0;
-	uint32_t globalResult = 0;
+	uint32_t totalInCircle = 0;
 
 	int stop = 0;
 	uint32_t iter = 0;
@@ -143,13 +143,18 @@ void runMonteCarloPiCalc(int argc, char *argv[]) {
 		double pi = 0;
 
 		if (rank == masterNode) {
-			globalResult += globalIterResult;
+			totalInCircle += globalIterResult;
 			uint64_t total = iter * packSize * (nodesSize - 1);
-			std::cout << "in circle " << globalResult << std::endl;
+			
+			std::cout << "in circle " << totalInCircle << std::endl;
 			std::cout << "total " << total << std::endl;
-			pi = 4.0 * (double) globalResult / (double) total;
+			
+			pi = 4.0 * ((double) totalInCircle / (double) total);
+
 			std::cout << "PI: " << pi << std::endl;
+			
 			double error = std::abs(M_PI - pi);
+			
 			if (error < epsilon || total > MAX_NB_RANDOM_POINT) { // tell to stop
 				stop = 1;
 			}

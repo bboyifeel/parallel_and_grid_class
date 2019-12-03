@@ -37,7 +37,8 @@ void runMonteCarloPiCalc() {
 
 	std::random_device	rand_dev;
 	std::default_random_engine generator(rand_dev());
-	std::uniform_real_distribution<double> distribution(0.0, 1.0);
+	//std::uniform_real_distribution<double> distribution(0.0, 1.0);
+	std::uniform_real_distribution<double> distribution(-1.0, 1.0);
 
 	std::string inFileName = "insideOfCircle.dat";
 	std::string outFileName = "outsideOfCircle.dat";
@@ -49,16 +50,17 @@ void runMonteCarloPiCalc() {
 	std::ofstream outsideOfCircle;
   	outsideOfCircle.open (outFileName);
 
-  	int iter = 0;
-  	bool done = false;
-  	double error = 1;
-  	
+	int iter = 0;
+	double error = 1;
+
   	while (error > epsilon || (iterSize * iter) > MAX_NB_RANDOM_POINT) {
   		iter++;
 		for (int i = 0; i < iterSize; i++)
 		{
-			x = distribution(generator) * r * 2.0 - r;
-			y = distribution(generator) * r * 2.0 - r;
+			// x = distribution(generator) * r * 2.0 - r;
+			// y = distribution(generator) * r * 2.0 - r;
+			x = distribution(generator);
+			y = distribution(generator);
 			if ((x * x + y * y) <= r * r) {
 				ncirc++;
 				insideOfCircle << x << " " << y << std::endl;
