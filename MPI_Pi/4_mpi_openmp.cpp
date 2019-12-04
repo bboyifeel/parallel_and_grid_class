@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <vector>
 
+#define NUM_THREADS 4
+
 const uint32_t masterNode = 0;
 const int tagXDotsPack = 1;
 const int tagYDotsPack = 2;
