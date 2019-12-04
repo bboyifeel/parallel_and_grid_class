@@ -27,6 +27,7 @@ module load devel/Boost/
 
 #MPI run and compile
 mpiicpc 3_mpi.cpp -o 3_mpi -lpthread # for boost -lboost_mpi (instead)
+# hybrid: -qopenmp -Wall -xhost 
 srun -n $SLURM_NTASKS 3_mpi
 
 #spark
