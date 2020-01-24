@@ -30,6 +30,9 @@ mpiicpc 3_mpi.cpp -o 3_mpi -lpthread # for boost -lboost_mpi (instead)
 # hybrid: -qopenmp -Wall -xhost 
 srun -n $SLURM_NTASKS 3_mpi
 
+#GPU
+srun -p gpu --time 2:00:00 -G 1 --pty bash
+
 #spark
 srun -p interactive -N 2 -n 2 -c 28 -t 3:00:00 --pty bash
 module load devel/Spark
